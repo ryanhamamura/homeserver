@@ -1,0 +1,62 @@
+---
+- hosts: all
+  tasks:
+
+  - name: install updates
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu", "Debian"]
+
+
+- hosts: jellyfin
+  tasks:
+
+  - name: Install apt-transport-https and gpg
+    tags: debian
+    apt:
+      name:
+        - apt-transport-https
+        - gnupg2
+      state: present
+  
+  - name: Import Jellyfin Team GPG Key
+    tags: debian
+    apt_key:
+      url: https://repo.jellyfin.org/debian/jellyfin_team.gpg.key
+      state: present
+
+
+  - name: Install Jellyfin 
+    tags: debian
+    apt:
+      name:
+        - jellyfin
+        - jellyfin-ffmpeg5
+
+- hosts: unifi
+  tasks:
+
+  - name: Install trusted key for Unifi repository
+    ansible.builtin.get_url:
+      url: https://dl.ui.com/unifi/unifi-repo.gpg
+      dest: /etc/apt/trusted.gpg.d/unifi-repo.gpg
+
+  - name: Add Unifi controller repo to sources list
+    ansible.builtin.apt_repository:
+      repo: deb https://www.ui.com/downloads/unifi/debian stable ubiquiti
+      state: present
+      update_cache: yes
+
+  - name: Install Unifi controller
+    apt:
+      name: unifi
+      state: present
+
+  - name: Ensure unifi controller is started and enabled at boot
+    service:
+      name: unifi
+      state: started
+      enabled: yes
+      
