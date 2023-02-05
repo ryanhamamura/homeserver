@@ -1,0 +1,11 @@
+[jellyfin]
+192.168.55.27
+
+[jellyfin:vars]
+ansible_user = root
+
+[unifi]
+192.168.55.28
+
+[unifi:vars]
+ansible_user = root
