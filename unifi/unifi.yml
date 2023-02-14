@@ -1,0 +1,31 @@
+---
+
+- hosts: unifi
+  tasks:
+
+  - name: Install trusted key for Unifi repository
+    tags: ubuntu,unifi
+    ansible.builtin.get_url:
+      url: https://dl.ui.com/unifi/unifi-repo.gpg
+      dest: /etc/apt/trusted.gpg.d/unifi-repo.gpg
+
+  - name: Add Unifi controller repo to sources list
+    tags: ubuntu,unifi
+    ansible.builtin.apt_repository:
+      repo: deb https://www.ui.com/downloads/unifi/debian stable ubiquiti
+      state: present
+      update_cache: yes
+
+  - name: Install Unifi controller
+    tags: ubuntu,unifi
+    apt:
+      name: unifi
+      state: present
+
+  - name: Ensure unifi controller is started and enabled at boot
+    tags: ubuntu,unifi
+    service:
+      name: unifi
+      state: started
+      enabled: yes
+      

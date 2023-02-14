@@ -1,0 +1,13 @@
+---
+- name: Make sure the Unifi controller is created and running
+  docker_container:
+    name: 'unifi'
+    image: 'ghcr.io/linuxserver/unifi-controller'
+    pull: true
+    state: 'started'
+    env:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - /mnt/public-media:/config 
+    restart_policy: unless-stopped

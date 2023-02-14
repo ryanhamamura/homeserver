@@ -1,0 +1,29 @@
+---
+- name: mount module demo
+  hosts: ubuntu
+  become: true
+  vars:
+    uri: "//192.168.55.7/public-media"
+    mountpoint: "/mnt/public-media"
+  tasks:
+    - name: Include vault
+      ansible.builtin.include_vars:
+        file: secret.yml
+    - name: Ensure cifs-utils is present
+      package:
+        name: cifs-utils
+        state: present
+    - name: Ensure mountpoint exists
+      ansible.builtin.file:
+        path: "{{ mountpoint }}"
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+    - name: Mount network share
+      ansible.posix.mount:
+        src: "{{ uri }}"
+        path: "{{ mountpoint }}"
+        fstype: cifs
+        opts: "username={{ username }},password={{ password }}"
+        state: mounted
