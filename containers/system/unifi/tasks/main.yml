@@ -6,8 +6,9 @@
     pull: true
     state: 'started'
     env:
-      PUID: 1000
-      PGID: 1000
+      - PUID=1000
+      - PGID=1000
+      - TZ=Pacific/Honolulu
     volumes:
-      - /mnt/public-media:/config 
+      # - /mnt/public-media:/config 
     restart_policy: unless-stopped
