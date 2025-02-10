@@ -13,6 +13,9 @@ Ensure of the following:
 - SSH pub keys added
 - IP config => DHCP
 
+Click `Regenerate Image` once changes have been made.
+
+
 ## Download cloud image
 ```sh
 wget https://cloud-images.ubuntu.com/minimal/releases/jammy/release/ubuntu-22.04-minimal-cloudimg-amd64.img
