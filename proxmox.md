@@ -36,6 +36,28 @@ mv ubuntu-22.04-minimal-cloudimg-amd64.img ubuntu-22.04.qcow2
 qemu-img resize ubuntu-22.04.qcow2 32G
 ```
 
+## Modify the image
+```sh
+# Ensure libguestfs-tools are installed
+apt-get install libguestfs-tools
+
+# Install qemu-guest-agent
+virt-customize -a ubuntu-22.04.qcow2 --install qemu-guest-agent
+
+# Change timezone
+virt-customize -a ubuntu-22.04.qcow2 --timezone Pacific/Honolulu
+
+# Remove machine-id
+virt-customize -a ubuntu-22.04.qcow2 --run-command "echo > /etc/machine-id; ln -sf /etc/machine-id /var/lib/dbus/machine-id"
+
+# Other examples
+# Edit ssh config
+# virt-edit ubuntu-22.04.qcow2 /etc/ssh/sshd_config
+
+# Edit cloud config, for say enabling root
+# virt-edit ubuntu-22.04.qcow2 /etc/cloud/cloud.cfg
+```
+
 ## Import disk into VM
 ```sh
 qm importdisk 902 ubuntu-22.04.qcow2 local-lvm
