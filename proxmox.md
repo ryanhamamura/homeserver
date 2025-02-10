@@ -7,6 +7,11 @@
 
 ## Add CloudInit drive after VM creation
 Hardware > Add > CloudInit Drive
+Ensure of the following: 
+- Username set
+- Password set
+- SSH pub keys added
+- IP config => DHCP
 
 ## Download cloud image
 ```sh
